@@ -9,14 +9,14 @@ import com.filipibrentegani.dependencyinjectionexample.domain.FindRepositoriesUs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MyViewModel: ViewModel() {
+class MyViewModel(private val useCase: FindRepositoriesUseCase): ViewModel() {
 
     private val repositories = MutableLiveData<FindRepositoriesResponse?>()
     val repositoriesLiveData: LiveData<FindRepositoriesResponse?> = repositories
 
     fun searchRepositories() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = FindRepositoriesUseCase().getRepositories("teste")
+            val result = useCase.getRepositories("teste")
             repositories.postValue(result)
         }
     }
